@@ -40,6 +40,7 @@ namespace Core.AI.Task
            jumpTween =  DOVirtual.DelayedCall(jumpTime, () =>
             {
                 hasLanded = true;
+                if(shakeCameraOnLanding)
                 CameraController.Instance.ShakeCamera(0.5f);
             }, false);
         }
