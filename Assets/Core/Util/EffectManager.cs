@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -28,12 +30,16 @@ namespace Core.Util
         public void PlayOneShot(ParticleSystem particleSystem, Vector3 position)
         {
             if (particleSystem == null) return;
-            
-            var effect = Instantiate(particleSystem, position, Quaternion.identity);
+
+            var effect = ObjectPoolManager.Instance.SpawnObject<ParticleSystem>(particleSystem.gameObject, position,
+                quaternion.identity, ObjectPoolManager.PoolType.ParticleSystem);
             effect.Play();
 
             var duration = effect.main.duration + effect.main.startLifetime.constantMax;
-            effect.gameObject.AddComponent<Disposable>().lifetime = duration;
+            DOVirtual.DelayedCall(duration, (() =>
+            {
+                ObjectPoolManager.Instance.ReturnObjectToPool(effect.gameObject);
+            }));
         }
 
         public void SpawnGold(Vector3 position, int count)

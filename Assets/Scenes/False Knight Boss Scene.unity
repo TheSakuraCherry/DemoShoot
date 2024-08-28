@@ -255,7 +255,7 @@ MonoBehaviour:
         Time","Instant":true,"SharedFloatDuration":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.1}},{"Type":"Core.AI.Task.Jump","NodeData":{"Offset":"(-353.442932,156.120239)"},"ID":13,"Name":"Jump","Instant":true,"SinglehorizontalForce":-4,"SinglejumpForce":10,"SinglebuildupTime":0,"SinglejumpTime":1,"StringanimationTriggerName":"Roll","BooleanshakeCameraOnLanding":false},{"Type":"BehaviorDesigner.Runtime.Tasks.Wait","NodeData":{"Offset":"(-235.443,166.120422)"},"ID":14,"Name":"Wait","Instant":true,"SharedFloatwaitTime":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.5},"SharedBoolrandomWait":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatrandomWaitMin":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1},"SharedFloatrandomWaitMax":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":1}},{"Type":"Core.AI.Task.SpawnMaggot","NodeData":{"Offset":"(-120.305573,162.102844)"},"ID":15,"Name":"Spawn
         Maggot","Instant":true,"GameObjectmaggotPrefab":0,"TransformmaggotTransform":1,"GameObjecthazardCollider":2},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetTrigger","NodeData":{"Offset":"(-16.9791927,164.748047)"},"ID":16,"Name":"Set
         Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":3},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Recover"}},{"Type":"Core.AI.Task.SetHealth","NodeData":{"Offset":"(102.359375,161.687378)"},"ID":17,"Name":"Set
-        Health","Instant":true,"SharedIntHealth":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":40}},{"Type":"Core.AI.Task.GotoNextStage","NodeData":{"Offset":"(225.306458,155.806091)"},"ID":18,"Name":"Goto
+        Health","Instant":true,"SharedIntHealth":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":200}},{"Type":"Core.AI.Task.GotoNextStage","NodeData":{"Offset":"(225.306458,155.806091)"},"ID":18,"Name":"Goto
         Next Stage","Instant":true,"SharedIntCurrentStage":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"CurrentStage","IsShared":true,"Int32mValue":0}}]}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-3.31246948,173.124939)"},"ID":19,"Name":"Sequence","Instant":true,"AbortTypeabortType":"LowerPriority","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.Math.IntComparison","NodeData":{"Offset":"(-128.312454,112.499939)"},"ID":20,"Name":"Int
         Comparison","Instant":true,"Operationoperation":"GreaterThanOrEqualTo","SharedIntinteger1":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":"CurrentStage","IsShared":true,"Int32mValue":0},"SharedIntinteger2":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":3}},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.UnityAnimator.SetTrigger","NodeData":{"Offset":"(-10.3437805,107.386124)"},"ID":21,"Name":"Set
         Trigger","Instant":true,"SharedGameObjecttargetGameObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null,"GameObjectmValue":4},"SharedStringparamaterName":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":"Dead"}},{"Type":"Core.AI.Task.DestroyBoss","NodeData":{"Offset":"(105.227905,113.604858)"},"ID":22,"Name":"Destroy
@@ -320,7 +320,7 @@ MonoBehaviour:
   customHitSound: {fileID: 0}
   hideWhenDead: 0
   hitMaterial: {fileID: 2100000, guid: d28059583e1a40249ad8daa3586d8028, type: 2}
-  health: 40
+  health: 200
 --- !u!50 &128786717
 Rigidbody2D:
   serializedVersion: 4
@@ -1769,6 +1769,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1429404015 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 339477802832129857, guid: b6aba049213e51e4fb6c1549e4b994df, type: 3}
+  m_PrefabInstance: {fileID: 339477802981662837}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1429404016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429404015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8383a06f4ac4444789f924bc73df7e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rate: 8
+  bulletPoint: {fileID: 1526600285}
+  offset: 0.5
+  bulletPrefab: {fileID: -1966988835982138999, guid: 93021013330199549a8df161b60ef2a7, type: 3}
 --- !u!1 &1484373257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,6 +1836,36 @@ Transform:
   - {fileID: 2131401147}
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1526600284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1526600285}
+  m_Layer: 6
+  m_Name: BulletPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1526600285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526600284}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.65, y: 0.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 42147524}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1536038190
 GameObject:

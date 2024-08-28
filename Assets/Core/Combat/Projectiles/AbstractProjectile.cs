@@ -7,7 +7,7 @@ namespace Core.Combat.Projectiles
 {
     public abstract class AbstractProjectile : MonoBehaviour
     {
-        public float damage;
+        public int damage;
         public ParticleSystem explosionEffect;
         public AudioClip splatterSound;
 
@@ -19,7 +19,7 @@ namespace Core.Combat.Projectiles
     
         public abstract void SetForce(Vector2 force);
 
-        protected void DestroyProjectile()
+        protected virtual void DestroyProjectile()
         {
             OnProjectileDestroyed?.Invoke(this);
         
@@ -31,7 +31,7 @@ namespace Core.Combat.Projectiles
             Destroy(gameObject);
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        public virtual void OnTriggerEnter2D(Collider2D collision)
         {
             // Can't shoot yourself
             if (collision.gameObject == Shooter)
