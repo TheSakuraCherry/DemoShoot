@@ -1,4 +1,5 @@
 ﻿using Core.Character;
+using Core.Hazards;
 using Core.Util;
 using UnityEngine;
 
@@ -22,12 +23,17 @@ namespace Core.Combat.Projectiles
             // Can't shoot yourself
             if (collision.gameObject == Shooter)
                 return;
-
+            if(collision.gameObject.layer == gameObject.layer)
+                return;
+            if (collision.gameObject.GetComponent<Hazard>())
+            {
+                return;
+            }
             // Projectile hit player
             var hittable = collision.GetComponent<Hittable>();
             if (hittable != null)
             {
-                hittable.OnAttackHit(Vector2.zero, Vector2.zero, damage);
+                hittable.OnAttackHit(collision.transform.position, Vector2.zero, damage);
                 
                 CameraController.Instance.ShakeCamera(0.05f, 0.5f);
             }

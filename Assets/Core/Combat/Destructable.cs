@@ -10,6 +10,8 @@ namespace Core.Combat
         public int CurrentHealth { get; set; }
         public bool Invincible { get; set; }
 
+        public Collider2D Area;
+
         public event Action OnDestroyed;
 
         protected override void Awake()

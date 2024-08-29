@@ -30,7 +30,7 @@ namespace Core.Character
         private BoxCollider2D collider;
         private AudioSource audioSource;
 
-        // Moving axis
+       
         private float horizontal;
         private float vertical;
         private Vector2 currentVelocity;
@@ -56,13 +56,13 @@ namespace Core.Character
         private int environmentLayerMask;
         private bool isDying;
 
-        // Attack
+       
         private AttackController attackController;
         private bool wasAttacking;
         private bool isAttackButtonDown;
         private bool wasAttackButtonDown;
 
-        // Dash
+       
         private bool isDashing;
         private bool wasDashing;
         private float dashTimer;
@@ -71,16 +71,16 @@ namespace Core.Character
         private float dashTime = 0.3f;
         private float dashCooldown = 1.0f;
 
-        // Hit Protection
+       
         private float hitProtectionDuration = 1.0f;
         private float hitProtectionTimer;
         public bool CanBeHit => hitProtectionTimer <= 0;
 
-        // Camera
+        
         private CameraController camController;
         private Camera cam;
 
-        // Physics
+        
         private PhysicsMaterial2D physicsMaterial;
 
         private bool controllable = true;
@@ -89,7 +89,7 @@ namespace Core.Character
 
         private LayerMask combatLayerMask;
         
-        // Properties
+       
         public bool Controllable
         {
             get => controllable && !BlockingUI;
@@ -149,7 +149,7 @@ namespace Core.Character
             combatLayerMask = ~LayerMask.GetMask("Player");
         }
 
-        // Start is called before the first frame update
+        
         void Start()
         {
             baseScaleX = transform.localScale.x;
@@ -161,10 +161,11 @@ namespace Core.Character
             maxSpeed = speed * maxAcceleration;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
-            // Update timers
+            if(isDying)return;
+            
             if (hitProtectionTimer > 0)
                 hitProtectionTimer -= Time.deltaTime;
 
@@ -179,6 +180,7 @@ namespace Core.Character
 
         private void FixedUpdate()
         {
+            if(isDying)return;
             GatherInput();
 
             Move();
@@ -199,13 +201,13 @@ namespace Core.Character
 
             movingVelocityX = horizontal * speed * acceleration;
 
-            // Air Drag
+           
             if (!isOnGround)
             {
                 movingVelocityX *= airDrag;
             }
 
-            // Horizontal Movement and climbing
+            
             if (dashTimer > 0)
                 body.velocity = new Vector2(dashSpeed * facingDirection, body.velocity.y);
             else
@@ -217,7 +219,7 @@ namespace Core.Character
             DoJump();
             Dash();
 
-            // Artificially limit horizontal and vertical velocity
+            
             float downwardsLimit = -24.0f;
             float upwardsLimit = 14.0f;
             body.velocity = new Vector2(Mathf.Clamp(body.velocity.x, -14.0f, 14.0f),
@@ -242,7 +244,6 @@ namespace Core.Character
 
             if (isPlayerControlled)
             {
-                // Then overwrite with keyboard input (if present)
                 horizontal = horizontal == 0
                     ? Input.GetAxis("Horizontal")
                     : horizontal;
@@ -258,8 +259,8 @@ namespace Core.Character
                 if (vertical > snapThreshold) vertical = 1;
                 else if (vertical < -snapThreshold) vertical = -1;
 
-                isJumping = isJumping || Input.GetButton("Jump");
-                isDashing = Input.GetButton("Dash");
+                isJumping = isJumping || Input.GetKey(KeyCode.Space);
+                isDashing = Input.GetKey(KeyCode.LeftShift);
 
             }
         }
@@ -293,7 +294,7 @@ namespace Core.Character
 
             if (wasOnGround && !isOnGround)
             {
-                // Dropping off ledge
+                
                 animator.SetBool(CharacterAnimations.IsJumping, true);
                 animator.SetTrigger(CharacterAnimations.StartJump);
                 //runningDustParticles.gameObject.SetActive(false);
@@ -302,18 +303,18 @@ namespace Core.Character
 
         private void FinalCollisionCheck()
         {
-            // Predict velocity in next physics step -> y value??
+           
             Vector2 moveDirection = new Vector2(body.velocity.x * Time.fixedDeltaTime, 0.02f);
 
-            // Get bounds of Collider
+           
             var topRight = new Vector2(collider.bounds.max.x, collider.bounds.max.y);
             var bottomLeft = new Vector2(collider.bounds.min.x, collider.bounds.min.y);
 
-            // Move collider in direction that we are moving
+            
             topRight += moveDirection;
             bottomLeft += moveDirection;
 
-            // Check if the body's current velocity will result in a collision
+            
             var hitCollider = Physics2D.OverlapArea(bottomLeft, topRight, environmentLayerMask);
             if (hitCollider != null)
             {
@@ -445,7 +446,7 @@ namespace Core.Character
             hitProtectionTimer = hitProtectionDuration;
             Instantiate(hurtFlashObject, transform.position, Quaternion.identity);
             GuiManager.Instance.FadeHurtVignette(vignetteIntensity);
-            // Recoil
+            
             DoRecoil(recoilForce);
             if (PlayerData.HP <= 0)
             {
@@ -453,7 +454,7 @@ namespace Core.Character
                 {
                     GameManager.Instance.FreezeTime(0.1f);
                     KillPlayer(killRecoil);
-                    animator.SetTrigger(CharacterAnimations.Die);
+                    animator.SetBool(CharacterAnimations.Die,true);
                     return;
                 }
             }
@@ -492,19 +493,18 @@ namespace Core.Character
         {
             if (isDying)
                 return;
-            DOVirtual.DelayedCall(1, (() =>
+            DOVirtual.DelayedCall(3, (() =>
             {
                 Object.Destroy(gameObject);
                 
                 
             }));
-            DOVirtual.DelayedCall(3, (() =>
+            DOVirtual.DelayedCall(5, (() =>
             {
                 EventBus<GameEndEvent>.Raise(new GameEndEvent());
             }));
            
-            // Fade screen and respawn player at last save position
-            // Restore HP and other stuff
+            
             Invincible = true;
             
             if (recoil)

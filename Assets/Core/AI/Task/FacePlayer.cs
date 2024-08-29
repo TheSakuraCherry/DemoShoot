@@ -13,9 +13,12 @@ namespace Core.AI.Task
 
         public override TaskStatus OnUpdate()
         {
-            var scale = transform.localScale;
-            scale.x = transform.position.x > player.transform.position.x ? -baseScaleX : baseScaleX;
-            transform.localScale = scale;
+            if (player)
+            {
+                var scale = transform.localScale;
+                scale.x = transform.position.x > player.transform.position.x ? -baseScaleX : baseScaleX;
+                transform.localScale = scale;
+            }
             return TaskStatus.Success;
         }
     }

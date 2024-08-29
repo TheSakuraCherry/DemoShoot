@@ -1,4 +1,5 @@
 ﻿using BehaviorDesigner.Runtime.Tasks;
+using Core.Combat;
 using Core.Combat.Projectiles;
 using DG.Tweening;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Core.AI.Task
 {
     public class SpawnFallingRocks : EnemyAction
     {
-        public Collider2D spawnAreaCollider;
+        public Collider2D spawnAreaCollider => destructable.Area;
         public AbstractProjectile rockPrefab;
         public int spawnCount = 4;
         public float spawnInterval = 0.3f;

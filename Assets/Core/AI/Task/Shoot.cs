@@ -19,7 +19,7 @@ namespace Core.AI.Task
                 var projectile = Object.Instantiate(weapon.projectilePrefab, weapon.weaponTransform.position,
                     quaternion.identity);
                 projectile.Shooter = gameObject;
-
+                projectile.SetForce(new Vector2(transform.localScale.x,1));
                 var force = new Vector2(weapon.horizontalForce * transform.localScale.x, weapon.verticalForce);
                 projectile.SetForce(force);
 

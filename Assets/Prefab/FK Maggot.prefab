@@ -167,10 +167,11 @@ MonoBehaviour:
   hitType: 3
   disableHitEffect: 0
   spriteParent: {fileID: 0}
-  customHitEffect: {fileID: 2312102699555575349, guid: 0b423862f2a24714d85d03367b52df85, type: 3}
+  customHitEffect: {fileID: 0}
   customHitSound: {fileID: 0}
   hideWhenDead: 0
   hitMaterial: {fileID: 2100000, guid: d28059583e1a40249ad8daa3586d8028, type: 2}
+  rate: 5
   health: 40
 --- !u!114 &9102481129280590259
 MonoBehaviour:

@@ -36,10 +36,10 @@ namespace Core.Combat
         private float timer = 0;
         public event Action<Vector2, Vector2> OnHit;
 
-        // Start is called before the first frame update
+        
         protected virtual void Awake()
         {
-            // Find all child sprite renderers
+            
             Transform spriteParentTransform = spriteParent != null ? spriteParent : transform;
             sprite = spriteParentTransform.GetComponentInChildren<SpriteRenderer>();
 
@@ -67,7 +67,7 @@ namespace Core.Combat
             }
             else if (hitType == HitType.Push)
             {
-                // Push object quickly by a small amount and return to its original position
+               
                 float hitAmount = 0.05f;
                 Tween.Position(transform, transform.position,
                     transform.position + new Vector3(UnityEngine.Random.Range(-hitAmount, hitAmount),
@@ -78,7 +78,7 @@ namespace Core.Combat
             {
                 if (timer > 1f / rate)
                 {
-                    // Impact color flash
+                   
                     sprite.material = hitMaterial;
                     StartCoroutine(ResetMaterial(0.1f));
                     timer = 0;//时间清零
@@ -86,7 +86,7 @@ namespace Core.Combat
                 
             }
 
-            // Impact particle effect
+           
             if (!disableHitEffect)
             {
                 if (customHitEffect != null)

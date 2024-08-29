@@ -101,6 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2090728658}
   - component: {fileID: 2090728659}
+  - component: {fileID: 968240495}
   m_Layer: 0
   m_Name: e_rifle_map_1
   m_TagString: Untagged
@@ -173,6 +174,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &968240495
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2090728657}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4956e1aad9ef3294ca8fd227fbf92bee, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2123738597
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +561,7 @@ MonoBehaviour:
   speed: 2.7
   accelerationMultiplier: 2.5
   maxAcceleration: 2
-  jumpForce: 700
+  jumpForce: 1200
   airDrag: 1
   bottomTransform: {fileID: 339477803513620803}
   hurtFlashObject: {fileID: 2629158396685185510, guid: cab2435f4b771dc49a119b9d2aa2b6ce, type: 3}
@@ -696,6 +716,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: -1966988835982138999, guid: 93021013330199549a8df161b60ef2a7, type: 3}
   Muzzle: {fileID: 465124598517214016}
   CanShoot: 0
+  GunAnim: {fileID: 968240495}
+  probabilityThreshold: 0.2
 --- !u!1 &339477803513620800
 GameObject:
   m_ObjectHideFlags: 0

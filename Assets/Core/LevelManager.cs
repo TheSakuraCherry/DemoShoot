@@ -1,6 +1,7 @@
 ﻿using System;
 using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using Core.Character;
+using Core.Combat;
 using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Core
         public Transform BossSpawnPosition;
         public PlayerController PlayerPrefab;
         public GameObject BossPrefab;
+        public Collider2D Area;
 
         private PlayerController player;
         private GameObject boss;
@@ -24,6 +26,7 @@ namespace Core
         private void Start()
         {
             Init();
+            button.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 250);
             CameraController.Instance.SetBorders(cameraBorders);
             gameEndEventBingding = new EventBingding<GameEndEvent>(GameEnd);
             EventBus<GameEndEvent>.Register(gameEndEventBingding);
@@ -32,13 +35,14 @@ namespace Core
         {
             player =Object.Instantiate<PlayerController>(PlayerPrefab, PlayerSpawnPosition.position, quaternion.identity);
             boss =Instantiate(BossPrefab, BossSpawnPosition.position, quaternion.identity);
+            boss.GetComponent<Destructable>().Area = Area;
             CameraController.Instance.player = player;
         }
         public void ReStartGame()
         {
-            button.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0,200), 2);
+            button.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0,250), 2);
             if(player)
-                Object.Destroy(player);
+                Object.Destroy(player.gameObject);
             if(boss)
                 Object.Destroy(boss);
             Init();

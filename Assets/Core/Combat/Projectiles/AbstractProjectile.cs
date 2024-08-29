@@ -42,7 +42,7 @@ namespace Core.Combat.Projectiles
             if (player != null)
             {
                 Vector2 force = this.force.normalized;
-                player.Hurt((int)damage, force * 300.0f);
+                player.Hurt((int)damage, new Vector2(force.x * 1000.0f,1000));
             }
         
             DestroyProjectile();

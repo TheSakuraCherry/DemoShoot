@@ -25,8 +25,8 @@ namespace Core.Hazards
                 if (!player.CanBeHit) return;
 
                 var recoilDirection = (collider.transform.position - transform.position).normalized;
-                float multiplier = recoilDirection.y < 0 ? 1.0f : 500.0f;
-                Vector2 recoilForce = recoilDirection * multiplier;
+                
+                Vector2 recoilForce = new Vector2(recoilDirection.x * 500,1*500);
 
                 player.Hurt(damage, recoilForce);
             }
