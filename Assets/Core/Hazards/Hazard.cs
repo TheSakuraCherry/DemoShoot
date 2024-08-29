@@ -28,7 +28,7 @@ namespace Core.Hazards
                 float multiplier = recoilDirection.y < 0 ? 1.0f : 500.0f;
                 Vector2 recoilForce = recoilDirection * multiplier;
 
-                player.Hurt(damage, recoilForce, killRecoil: false);
+                player.Hurt(damage, recoilForce);
             }
         }
     }

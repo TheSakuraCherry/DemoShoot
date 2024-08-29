@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using Core.UI;
 using Core.Util;
+using DG.Tweening;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Core.Character
 {
@@ -435,28 +437,31 @@ namespace Core.Character
         {
             if (hitProtectionTimer > 0 || isDying)
                 return;
-
+            animator.SetTrigger("Hit");
             SetHealth(PlayerData.HP - damage);
 
             float shakeIntensity = 0.5f;
             camController.ShakeCamera(shakeIntensity);
-
+            hitProtectionTimer = hitProtectionDuration;
+            Instantiate(hurtFlashObject, transform.position, Quaternion.identity);
+            GuiManager.Instance.FadeHurtVignette(vignetteIntensity);
+            // Recoil
+            DoRecoil(recoilForce);
             if (PlayerData.HP <= 0)
             {
                 if (!Invincible)
                 {
+                    GameManager.Instance.FreezeTime(0.1f);
                     KillPlayer(killRecoil);
                     animator.SetTrigger(CharacterAnimations.Die);
+                    return;
                 }
             }
-
-            hitProtectionTimer = hitProtectionDuration;
-            Instantiate(hurtFlashObject, transform.position, Quaternion.identity);
-            GuiManager.Instance.FadeHurtVignette(vignetteIntensity);
+            
+           
             GameManager.Instance.FreezeTime(0.02f);
 
-            // Recoil
-            DoRecoil(recoilForce);
+            
         }
         
         public void Concuss()
@@ -487,11 +492,21 @@ namespace Core.Character
         {
             if (isDying)
                 return;
-
+            DOVirtual.DelayedCall(1, (() =>
+            {
+                Object.Destroy(gameObject);
+                
+                
+            }));
+            DOVirtual.DelayedCall(3, (() =>
+            {
+                EventBus<GameEndEvent>.Raise(new GameEndEvent());
+            }));
+           
             // Fade screen and respawn player at last save position
             // Restore HP and other stuff
             Invincible = true;
-
+            
             if (recoil)
             {
                 DoRecoil(new Vector2(0, 700.0f));
@@ -499,7 +514,7 @@ namespace Core.Character
 
             //SoundManager.Instance.PlaySound(deathSound, 1, audioSource);
             isDying = true;
-            animator.SetBool("IsDying", true);
+           
 
             OnDeath?.Invoke();
         }

@@ -23,6 +23,7 @@ namespace Core.AI.Task
                 CameraController.Instance.ShakeCamera(0.7f);
                 isDestoryed = true;
                 Object.Destroy(gameObject);
+                EventBus<GameEndEvent>.Raise(new GameEndEvent());
             }, false);
         }
 

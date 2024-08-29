@@ -14,12 +14,30 @@ namespace Core.Combat
         public Transform bulletPoint;//子弹发射点
         public float offset = 0.5f;
         public Bullet bulletPrefab;
+        public ParticleSystem Muzzle;
+        public bool CanShoot;
+
+        private void Awake()
+        {
+            Muzzle.Stop();
+            CanShoot = true;
+        }
 
         private void Update()
         {
+            if (!CanShoot)return;
             if(Input.GetMouseButton(0))
             {
                 Shoot();
+                if (!Muzzle.isPlaying)
+                {
+                    Muzzle.Play();
+                }
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                Muzzle.Stop();
             }
         }
         public void Shoot()
@@ -32,6 +50,7 @@ namespace Core.Combat
                 bullet.SetForce(new Vector2(transform.localScale.x,0));
                 bullet.Shooter = this.gameObject;
                 CameraController.Instance.ShakeCamera(0.05f, 0.5f);
+                transform.position -= new Vector3(transform.localScale.x * 0.05f, 0, 0);
                 timer = 0;//时间清零
                 
             }

@@ -32,7 +32,8 @@ namespace Core.Combat
         private float baseScale;
         protected Color defaultColor = Color.white;
         private Material defaultMaterial;
-
+        public float rate = 5;
+        private float timer = 0;
         public event Action<Vector2, Vector2> OnHit;
 
         // Start is called before the first frame update
@@ -44,6 +45,11 @@ namespace Core.Combat
 
             baseScale = transform.localScale.y;
             defaultMaterial = sprite.material;
+        }
+
+        private void Update()
+        {
+            timer += Time.deltaTime;
         }
 
         public virtual void OnAttackHit(Vector2 position, Vector2 force, int damage)
@@ -70,9 +76,14 @@ namespace Core.Combat
             }
             else if (hitType == HitType.Color)
             {
-                // Impact color flash
-                sprite.material = hitMaterial;
-                StartCoroutine(ResetMaterial(0.1f));
+                if (timer > 1f / rate)
+                {
+                    // Impact color flash
+                    sprite.material = hitMaterial;
+                    StartCoroutine(ResetMaterial(0.1f));
+                    timer = 0;//时间清零
+                }
+                
             }
 
             // Impact particle effect

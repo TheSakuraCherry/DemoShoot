@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Core.Combat;
 using Core.Util;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Core.Character
 {
@@ -20,7 +22,7 @@ namespace Core.Character
         private float attackCooldown;
         private List<GameObject> attackVictims;
         private ParticleSystem currentThrustParticles;
-
+        public GameObject Gun; 
         private PlayerController _playerController;
 
         void Awake()
@@ -29,6 +31,7 @@ namespace Core.Character
 
             attackVictims = new List<GameObject>(10);
             SwitchWeapon();
+            attackTargetTransform.SetParent(null);
         }
 
         // Update is called once per frame
@@ -36,6 +39,16 @@ namespace Core.Character
         {
             if (attackCooldown <= 0)
             {
+                var basegun = GetComponent<BaseGun>();
+                basegun.CanShoot = false;
+                basegun.Muzzle.Stop();
+                Gun.SetActive(false);
+                DOVirtual.DelayedCall(0.5f, (() =>
+                {
+                    Gun.SetActive(true);
+                    basegun.CanShoot = true;
+
+                }));
                 // Add controller support with Right analog stick
                 Vector3 attackDirection = new Vector3(
                     Input.GetAxisRaw("Horizontal"),

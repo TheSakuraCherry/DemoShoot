@@ -25,21 +25,21 @@ namespace Core.Character
 
         public bool IsFollowingPlayer { get; set; }
 
-        private PlayerController player;
+        public PlayerController player;
         private Vector2 targetPosition;
 
         private void Awake()
         {
             if (Instance == null)
                 Instance = this;
-
-            player = PlayerController.Instance;
+            
             IsFollowingPlayer = true;
         }
 
         void Update()
         {
             if (!IsFollowingPlayer) return;
+            if(!player)return;
 
             Vector2 playerScreenPos = player.transform.position - cameraTarget.position;
 
@@ -83,7 +83,7 @@ namespace Core.Character
         public void UpdateVertically()
         {
             // Update vertical target position (is controlled from the outside)
-            if (IsFollowingPlayer)
+            if (IsFollowingPlayer && player)
             {
                 targetPosition.y = Mathf.Min(Mathf.Max(player.transform.position.y + verticalOffset, borderMin.y + 10.0f), borderMax.y - 5.0f);
             }

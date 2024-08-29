@@ -1,17 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Core.Character;
+using Unity.Mathematics;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Core
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : SingletonBase<GameManager>
     {
-        public static GameManager Instance;
-        
-        private void Awake()
+       
+
+      
+
+        public void Start()
         {
-            if (Instance == null)
-                Instance = this;
+            
+
         }
+
+       
+
 
         public void FreezeTime(float duration)
         {
@@ -24,5 +33,8 @@ namespace Core
             yield return new WaitForSeconds(duration);
             Time.timeScale = 1.0f;
         }
+
+       
+        
     }
 }
